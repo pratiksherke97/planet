@@ -13,29 +13,39 @@ import java.util.stream.Collectors;
 @Service
 public class RectangleShapeService implements ShapeService {
 
+  private static final int RECTANGLE_VERTICES = 4;
+
   @Override
-  public Set<Set<Point>> getShapeCount(List<Point> points) {
-    return  Sets.combinations(Sets.newHashSet(points), 4).stream()
-        .filter(this::isRectangle).collect(Collectors.toSet());
+  public Set<Set<Point>> getShapeFromPoints(List<Point> points) {
+
+    return Sets.combinations(Sets.newHashSet(points), 4).stream()
+        .filter(RectangleShapeService::isRectangle).collect(Collectors.toSet());
   }
 
   @Override
   public boolean checkCoordinateCount(List<Point> points) {
-    return false;
+
+    return points.size() >= RECTANGLE_VERTICES;
+
   }
 
   @Override
   public ShapeResponse getCountAndPointsForShape(List<Point> points) {
 
-    final Set<Set<Point>> shapeCount = getShapeCount(points);
-    final long count = shapeCount.stream().count();
+    if(!checkCoordinateCount(points)){
+      throw new RuntimeException("Points provided are not sufficient to form a rectangle");
+    }
+
+    final Set<Set<Point>> shapeCount = getShapeFromPoints(points);
+    final int count = shapeCount.size();
+
     return ShapeResponse.builder().count(count).points(shapeCount).build();
   }
 
-  private boolean isRectangle(Set<Point> points) {
+  private static boolean isRectangle(Set<Point> points) {
 
-    final double centerX = points.stream().mapToDouble(Point::getX).sum() / 4.0;
-    final double centerY = points.stream().mapToDouble(Point::getY).sum() / 4.0;
+    final double centerX = points.stream().mapToDouble(Point::getX).sum() / RECTANGLE_VERTICES;
+    final double centerY = points.stream().mapToDouble(Point::getY).sum() / RECTANGLE_VERTICES;
 
     return points.stream().map(point -> calculateDistance(centerX, centerY, point))
         .distinct().count() == 1;
