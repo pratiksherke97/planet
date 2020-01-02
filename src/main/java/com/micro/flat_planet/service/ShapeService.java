@@ -8,7 +8,7 @@ import java.util.Set;
 
 public interface ShapeService {
 
-  Set<Set<Point>> getShapeCount(List<Point> points);
+  Set<Set<Point>> getShapeFromPoints(List<Point> points);
 
   boolean checkCoordinateCount(List<Point> points);
 
