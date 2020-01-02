@@ -10,7 +10,7 @@ public interface ShapeService {
 
   Set<Set<Point>> getShapeFromPoints(List<Point> points);
 
-  boolean checkCoordinateCount(List<Point> points);
+  boolean checkSufficientNumberOfPoints(List<Point> points);
 
   ShapeResponse getCountAndPointsForShape(List<Point> points);
 

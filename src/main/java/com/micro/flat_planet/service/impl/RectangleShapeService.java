@@ -23,7 +23,7 @@ public class RectangleShapeService implements ShapeService {
   }
 
   @Override
-  public boolean checkCoordinateCount(List<Point> points) {
+  public boolean checkSufficientNumberOfPoints(List<Point> points) {
 
     return points.size() >= RECTANGLE_VERTICES;
 
@@ -32,7 +32,7 @@ public class RectangleShapeService implements ShapeService {
   @Override
   public ShapeResponse getCountAndPointsForShape(List<Point> points) {
 
-    if(!checkCoordinateCount(points)){
+    if(!checkSufficientNumberOfPoints(points)){
       throw new RuntimeException("Points provided are not sufficient to form a rectangle");
     }
 
